@@ -28,9 +28,8 @@ getcert request -r -K host/$(hostname) -f /etc/ssl/gluster.pem -k /etc/ssl/glust
 getcert resubmit -r -K host/$(hostname -f) -f /etc/ssl/gluster.pem -k /etc/ssl/gluster.key -D $(hostname -f) -F /etc/ssl/gluster.ca
 ```
 
-Mount a voulume to glusterFS cluster
+Mount a volume to glusterFS cluster
 ---
 ```Shell
 gluster volume create volume1 replica 3 ubt-dkr11:/mnt/data/ ubt-dkr21:/mnt/data/ ubt-dkr31:/mnt/data/
-
 ```
