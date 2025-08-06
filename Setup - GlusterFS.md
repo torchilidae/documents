@@ -1,7 +1,7 @@
 GlusterFS Package installation command
 ---
 ```Shell
-sudo apt install glusterfs-server software-properties-common -y
+sudo apt install glusterfs-server software-properties-common certmonger -y
 ```
 
 Enable GlusterFS service
@@ -28,8 +28,33 @@ getcert request -r -K host/$(hostname) -f /etc/ssl/gluster.pem -k /etc/ssl/glust
 getcert resubmit -r -K host/$(hostname -f) -f /etc/ssl/gluster.pem -k /etc/ssl/gluster.key -D $(hostname -f) -F /etc/ssl/gluster.ca
 ```
 
+Prepare the GlusterFS cluster for data storage
+---
+```Shell
+mkdir /mnt/data/brick1
+```
+
+
 Mount a volume to glusterFS cluster
 ---
 ```Shell
-gluster volume create volume1 replica 3 ubt-dkr11:/mnt/data/ ubt-dkr21:/mnt/data/ ubt-dkr31:/mnt/data/
+gluster volume create volume1 replica 3 ubt-dkr11:/mnt/data/brick1 ubt-dkr21:/mnt/data/brick1 ubt-dkr31:/mnt/data/brick1
+```
+
+Start the volume
+---
+```Shell
+gluster volume start volume1
+```
+
+Check the status of the volume
+--- 
+```Shell
+gluster volume status
+```
+
+Mount the volume to fstab
+--- 
+```Shell
+echo "$(hostname).tsphotoclicks.net:/volume_internal /mnt/volume_internal  glusterfs defaults,_netdev 0 0" | sudo tee -a /etc/fstab
 ```
